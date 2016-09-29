@@ -12,6 +12,7 @@ Types are either:
 """
 
 import json
+import os
 from datetime import datetime as dt
 
 from pymongo import MongoClient
@@ -25,6 +26,9 @@ if DB_NAME == 'mongo':
     client = MongoClient(host=settings.DB_URI, port=settings.DB_PORT)
     conn = client[settings.DB_NAME]
     coll = conn[settings.DB_TABLE]
+elif DB_NAME == 'file':
+    # No connections are necessary.
+    pass
 else:
     raise NotImplemented('PostgreSQL is not yet supported.')
 
@@ -61,6 +65,34 @@ def read(**kwargs):
             return coll.find(**kwargs)
         else:
             return coll.find_one(dict(id=kwargs.pop('c_id')))
+    elif DB_NAME == 'file':
+        filedir = settings.DB_URI
+        if kwargs.get('c_id', None) is None:
+            files = []
+            filenames = [
+                f for f in os.listdir(filedir) if f.endswith('.json')
+            ]
+            limit = kwargs.get('limit', len(filenames) + 1)
+            offset = kwargs.get('offset', 0)
+            filenames = filenames[offset:limit]
+            for c_id in filenames:
+                with open('{}/{}'.format(filedir, c_id)) as jsonfile:
+                    jsonfile = json.loads(jsonfile.read())
+                    # Handle all filter arguments.
+                    if 'filter' in kwargs:
+                        for arg, val in kwargs['filter'].items():
+                            if arg in jsonfile:
+                                if kwargs['filter'][arg] == jsonfile[arg]:
+                                    files.append(jsonfile)
+                            else:
+                                files.append(jsonfile)
+                    else:
+                        files.append(jsonfile)
+            return files
+        else:
+            c_id = kwargs.get('c_id')
+            with open('{}/{}.json'.format(filedir, c_id)) as jsonfile:
+                return json.loads(jsonfile.read())
     else:
         raise NotImplemented('{} is not supported.'.format(DB_NAME))
 
@@ -80,6 +112,9 @@ def update(c_id, data=None, fmt_modules=True):
         }
         save_conf['$set'].update(**data)
         coll.update(dict(id=c_id), save_conf)
+    elif DB_NAME == 'file':
+        # Create/update is effectively the same for files.
+        create(data=data)
     else:
         raise NotImplemented('{} is not supported.'.format(DB_NAME))
 
@@ -90,6 +125,12 @@ def create(data=None):
         return
     if DB_NAME == 'mongo':
         coll.insert(data)
+    elif DB_NAME == 'file':
+        filedir = settings.DB_URI
+        filename = data.get('id')
+        with open('{}/{}.json'.format(filedir, filename), 'w') as jsonfile:
+            data['date'] = str(data['date'])
+            jsonfile.write(json.dumps(data))
     else:
         raise NotImplemented('{} is not supported.'.format(DB_NAME))
 
@@ -98,6 +139,9 @@ def delete(c_id):
     """Delete a record."""
     if DB_NAME == 'mongo':
         coll.delete_one(dict(id=c_id))
+    elif DB_NAME == 'file':
+        filedir = settings.DB_URI
+        os.remove('{}/{}.json'.format(filedir, c_id))
     else:
         raise NotImplemented('{} is not supported.'.format(DB_NAME))
 
@@ -109,5 +153,10 @@ def delete_all():
     """
     if DB_NAME == 'mongo':
         coll.remove()
+    elif DB_NAME == 'file':
+        filedir = settings.DB_URI
+        files = [f for f in os.listdir(filedir) if f.endswith('.json')]
+        for filename in files:
+            os.remove('{}/{}'.format(filedir, filename))
     else:
         raise NotImplemented('{} is not supported.'.format(DB_NAME))
