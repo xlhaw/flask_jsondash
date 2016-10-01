@@ -46,6 +46,7 @@ charts = Blueprint(
     static_folder=static_dir,
 )
 default_config = dict(
+    JSONDASH_THEME='dark',
     JSONDASH_FILTERUSERS=False,
     JSONDASH_GLOBALDASH=False,
     JSONDASH_GLOBAL_USER='global',
@@ -113,6 +114,7 @@ def _ctx():
     return dict(
         charts_config=CHARTS_CONFIG,
         page_title='dashboards',
+        theme=setting('JSONDASH_THEME'),
         global_dashuser=setting('JSONDASH_GLOBAL_USER'),
         global_dashboards=setting('JSONDASH_GLOBALDASH'),
         username=metadata(key='username') if filter_user else None,

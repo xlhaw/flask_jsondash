@@ -1,5 +1,8 @@
-body {
+body.charts-light {
     background-color: #f1f1f1;
+}
+body.charts-dark {
+    background-color: #111;
 }
 
 /* Widgets */
@@ -10,6 +13,10 @@ body {
     background-color: #fff;
     border-bottom-width: 2px;
     border-bottom-color: #bbb;
+}
+.charts-dark #charts-builder .widget {
+    border-color: #444;
+    background-color: #222;
 }
 #charts-builder .widget:hover {
     border-color: #85C785;
@@ -88,6 +95,10 @@ body {
     height: 35px !important;
     line-height: 20px;
     overflow: hidden;
+}
+.charts-dark #charts-builder .widget .widget-title {
+    border-color: #444;
+    color: #a1a1a1;
 }
 #charts-builder #view-builder.editing {
     border: 1px solid #ccc;

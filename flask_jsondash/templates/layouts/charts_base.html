@@ -84,6 +84,7 @@
 <script src="{{ url_for('jsondash._static', filename='js/utils.js') }}"></script>
 <script>
     $(document).ready(function(){
+        $('body').addClass('charts-{{ theme }}');
         jsondash.addDomEvents();
         {% if view %}
         jsondash.loadDashboard({{ view|jsonstring|safe }});

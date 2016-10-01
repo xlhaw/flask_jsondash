@@ -171,6 +171,8 @@ Below are global app config flags. Their default values are represented in the e
 
 `app.config['JSONDASH_MAX_PERPAGE'] = 50`: The number of results to show per page. Remaining results will be paginated.
 
+`app.config['JSONDASH_THEME'] = 'light'`: Theme to choose. Options are: 'light', 'dark'. Note: the dark theme only affects the core chart css, not any bootstrap styling. You can find complementary dark themes for boostrap specifically; for example, [getbootstrap.com](http://www.getbootstrap.com) has some great ones.
+
 ## Versioning
 
 This project uses semantic versioning for releases. However, the master branch is considered to be unstable as it represents "bleeding edge" with updates, hotfixes, etc... that eventually get tagged with a release. If you want to use a stable version, make sure to pin the specific release you want to target.
