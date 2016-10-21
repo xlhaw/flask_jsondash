@@ -373,5 +373,25 @@ def voronoi():
     return json.dumps([[rr(1, h), rr(1, w)] for _ in range(max_points)])
 
 
+@cross_origin()
+@app.route('/metricsgraphics', methods=['GET'])
+def metricsgraphics():
+    """Fake endpoint."""
+    if 'type' in request.args:
+        filename = request.args.get('type')
+        path = '{}/examples/metricsgraphics/{}.json'.format(cwd, filename)
+        with open(path, 'rb') as jsonfile:
+            data = json.loads(jsonfile.read())
+            return json.dumps(dict(
+                title='Line Chart',
+                description='This is a simple line chart.',
+                data=data,
+                right=40,
+                x_accessor='data',
+                y_accessor='value',
+            ))
+    return json.dumps({})
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5004)

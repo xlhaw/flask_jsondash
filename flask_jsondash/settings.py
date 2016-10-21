@@ -140,6 +140,22 @@ CHARTS_CONFIG = {
         'enabled': True,
         'help_link': 'http://omnipotent.net/jquery.sparkline/#s-docs',
     },
+    'MetricsGraphs': {
+        'charts': [
+            ('metrics-any', 'any'),
+        ],
+        'dependencies': ['D3'],
+        'js_url': [
+            ('cdnjs.cloudflare.com/ajax/libs/metrics-graphics/'
+             '2.10.1/metricsgraphics.min.js'),
+        ],
+        'css_url': [
+            ('cdnjs.cloudflare.com/ajax/libs/metrics-graphics/'
+             '2.10.1/metricsgraphics.min.css'),
+        ],
+        'enabled': True,
+        'help_link': 'https://github.com/mozilla/metrics-graphics/wiki',
+    },
     'PlotlyStandard': {
         'charts': [
             ('plotly-any', 'Any'),

@@ -447,3 +447,24 @@ jsondash.handlers.handlePlotly = function(container, config) {
         jsondash.unload(container);
     });
 };
+
+jsondash.handlers.handleMetricsGraphics = function(container, config) {
+    'use strict';
+    var id = 'mg-' + config.guid;
+    container.selectAll('.mg-container').remove();
+    var el = container.append('div')
+        .classed({'mg-container': true})
+        .attr('id', id);
+    d3.json(config.dataSource, function(error, data){
+        if(error) { throw new Error('Could not load url: ' + config.dataSource); }
+        data['data'] = MG.convert.date(data['data'], 'date');
+        data['width'] = config.width;
+        data['height'] = config.height;
+        data['target'] = document.getElementById(id);
+        // del data['right'];
+        // del data['left'];
+        console.log(data);
+        MG.data_graphic(data);
+        jsondash.unload(container);
+    });
+};

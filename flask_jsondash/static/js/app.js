@@ -334,6 +334,9 @@ var jsondash = function() {
             else if(config.type === 'custom') {
                 jsondash.handlers.handleCustom(widget, config);
             }
+            else if(config.type === 'metrics-any') {
+                jsondash.handlers.handleMetricsGraphics(widget, config);
+            }
             else if(config.type === 'plotly-any') {
                 jsondash.handlers.handlePlotly(widget, config);
             }
