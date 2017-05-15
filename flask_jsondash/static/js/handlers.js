@@ -52,7 +52,6 @@ jsondash.getDynamicWidth = function(container, config) {
     return parseInt(config.width, 10);
 };
 
-
 /**
  * [getDiameter Calculate a valid diameter for a circular widget,
  * based on width/height to ensure the size never goes out of the container bounds.]
@@ -60,6 +59,36 @@ jsondash.getDynamicWidth = function(container, config) {
 jsondash.getDiameter = function(container, config) {
     var width = isNaN(config.width) ? jsondash.getDynamicWidth(container, config) : config.width;
     return d3.min([d3.round(width), config.height]);
+};
+
+/**
+ * Handler for all metrics-graphics specifications
+ */
+jsondash.handlers.handleMetricsGraphics = function(container, config) {
+    'use strict';
+    var _width = isNaN(config.width) ? jsondash.getDynamicWidth(container, config) : config.width;
+    // Titlebar + padding + a bit extra to account for the bottom.
+    var titlebar_offset = jsondash.getTitleBarHeight(container) * 1.2;
+    container.selectAll('.chart-container').remove();
+    container.append('div')
+        .classed({'chart-container': true})
+        .style({
+        width: (_width - 10) + 'px',
+        height: (config.height - titlebar_offset) + 'px'
+    });
+    jsondash.getJSON(container, config.dataSource, function(error, data){
+        // data = MG.convert.date(data, 'date');
+        var override = {
+            target: document.querySelector('[data-guid="' + config.guid + '"] .chart-container'),
+            width: _width,
+            height: config.height
+        };
+        var spec = $.extend(data, override);
+        MG.data_graphic(spec);
+        // Look for callbacks potentially registered for third party code.
+        jsondash.api.runCallbacks(container, config);
+        jsondash.unload(container);
+    });
 };
 
 /**
@@ -92,7 +121,6 @@ jsondash.handlers.handleCytoscape = function(container, config) {
             },
         };
         var spec = $.extend(cyspec, override);
-        console.log(spec);
         var cy = cytoscape(spec);
         // Look for callbacks potentially registered for third party code.
         jsondash.api.runCallbacks(container, config);

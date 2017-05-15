@@ -221,7 +221,19 @@ def get_all_assets():
 
 
 def get_active_assets(families):
-    """Given a list of chart families, determine what needs to be loaded."""
+    """Given a list of chart families, determine what needs to be loaded.
+
+    Args:
+        families (list): The list of family names to load all static files from
+            e.g. ['D3', 'C3']
+
+    Returns:
+        list: The list of asset URLS to load.
+
+    Examples:
+        >>> get_active_assets(['D3', 'C3'])
+        >>> ['/static/js/vendor/d3.min.js', '/static/js/vendor/c3.min.js']
+    """
     families += REQUIRED_STATIC_FAMILES  # Always load internal, shared libs.
     assets = dict(css=[], js=[])
     families = set(families)

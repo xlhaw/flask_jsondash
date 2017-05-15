@@ -145,6 +145,20 @@ def cytoscape():
 
 
 @cross_origin()
+@app.route('/metricsgraphics')
+def metricsgraphics():
+    """Fake endpoint. Reads data from a local metricsgraphics spec."""
+    chart_name = request.args.get('name', 'prec1')
+    filename = '{}/examples/metricsgraphics/{}.json'.format(cwd, chart_name)
+    try:
+        with open(filename, 'r') as chartjson:
+            return chartjson.read()
+    except IOError:
+        pass
+    return jsonify({})
+
+
+@cross_origin()
 @app.route('/vegalite')
 def vegalite():
     """Fake endpoint.

@@ -204,6 +204,23 @@ CHARTS_CONFIG = {
         'enabled': True,
         'help_link': 'http://omnipotent.net/jquery.sparkline/#s-docs',
     },
+    'MetricsGraphics': {
+        'charts': [
+            ('metricsgraphics', 'MetricsGraphics compatible configuration'),
+        ],
+        'dependencies': [],
+        'js_url': [
+            ('https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.0/d3.min.js'),
+            ('//cdnjs.cloudflare.com/ajax/libs/metrics-graphics/'
+             '2.11.0/metricsgraphics.min.js'),
+        ],
+        'css_url': [
+            ('//cdnjs.cloudflare.com/ajax/libs/metrics-graphics/'
+             '2.11.0/metricsgraphics.min.css'),
+        ],
+        'enabled': True,
+        'help_link': 'https://www.metricsgraphicsjs.org/',
+    },
     'PlotlyStandard': {
         'charts': [
             ('plotly-any', 'Plotly serializable specification'),

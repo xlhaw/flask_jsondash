@@ -1,0 +1,80 @@
+{
+    "username": "anonymous",
+    "layout": "grid",
+    "name": "MetricsGraphics examples",
+    "modules": [
+        {
+            "name": "Floating point precision",
+            "family": "MetricsGraphics",
+            "refresh": false,
+            "height": 500,
+            "width": "col-4",
+            "dataSource": "http://localhost:5004/metricsgraphics?name=float",
+            "override": false,
+            "refreshInterval": "",
+            "guid": "e5b750b3-3375-c04a-2307-920f4b8fc173",
+            "type": "metricsgraphics",
+            "order": 3,
+            "row": 1
+        },
+        {
+            "name": "Aggregated",
+            "family": "MetricsGraphics",
+            "refresh": false,
+            "height": 500,
+            "width": "col-4",
+            "dataSource": "http://localhost:5004/metricsgraphics?name=aggregated",
+            "override": false,
+            "refreshInterval": "",
+            "guid": "7a86178e-90ae-e3e9-74de-19786d12afca",
+            "type": "metricsgraphics",
+            "order": 2,
+            "row": 1
+        },
+        {
+            "name": "Confidence band - line",
+            "family": "MetricsGraphics",
+            "refresh": false,
+            "height": 620,
+            "width": "col-4",
+            "dataSource": "http://localhost:5004/metricsgraphics?name=confidence_band",
+            "override": false,
+            "refreshInterval": "",
+            "guid": "4f52ba49-e456-4c63-a3a0-e033fbb64add",
+            "type": "metricsgraphics",
+            "order": 1,
+            "row": 3
+        },
+        {
+            "name": "Small range",
+            "family": "MetricsGraphics",
+            "refresh": false,
+            "height": 620,
+            "width": "col-6",
+            "dataSource": "http://localhost:5004/metricsgraphics?name=small_range",
+            "override": false,
+            "refreshInterval": "",
+            "guid": "3192e657-5f5f-413e-98c6-f3b022f8fc65",
+            "type": "metricsgraphics",
+            "order": 1,
+            "row": 2
+        },
+        {
+            "name": "Annotated graphs",
+            "family": "MetricsGraphics",
+            "refresh": false,
+            "height": 620,
+            "width": "col-6",
+            "dataSource": "http://localhost:5004/metricsgraphics?name=annotations",
+            "override": false,
+            "refreshInterval": "",
+            "guid": "0d713cc4-51a9-4b6f-bdb2-12ed84b91b2e",
+            "type": "metricsgraphics",
+            "order": 1,
+            "row": 2
+        }
+    ],
+    "created_by": "global",
+    "date": "2017-05-15 14:25:08.304219",
+    "id": "55aab6f3-38e7-11e7-96fb-a0999b0aebbf"
+}
