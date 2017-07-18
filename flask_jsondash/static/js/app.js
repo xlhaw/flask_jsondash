@@ -5,7 +5,8 @@
 
 var jsondash = function() {
     var my = {
-        chart_wall: null
+        chart_wall: null,
+        url_cache: {}
     };
     var MIN_CHART_SIZE   = 200;
     var API_ROUTE_URL    = $('[name="dataSource"]');
@@ -793,7 +794,7 @@ var jsondash = function() {
             });
             my.widgets.get(config.guid).update(_config, true);
             // Otherwise reload like normal.
-            loadWidgetData(config.guid);
+            my.widgets.get(config.guid).load();
             // Hide the form again
             $(inputs_selector).removeClass('in');
         });
@@ -816,16 +817,6 @@ var jsondash = function() {
             d3             : jsondash.handlers.handleD3
         };
         return handlers[family];
-    }
-
-    /**
-     * [loadWidgetData Load a widgets data source/re-render]
-     * @param  {[dom selection]} widget [The dom selection]
-     * @param  {[object]} config [The chart config]
-     */
-    function loadWidgetData(guid) {
-        var widget = my.widgets.get(guid);
-        widget.load();
     }
 
     function addResizeEvent(widg) {
@@ -926,7 +917,7 @@ var jsondash = function() {
 
         // Load all widgets, adding actual ajax data.
         for(var guid in my.widgets.all()){
-            loadWidgetData(guid);
+            my.widgets.get(guid).load();
         }
 
         // Setup responsive handlers
