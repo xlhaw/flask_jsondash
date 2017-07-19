@@ -74,16 +74,18 @@ def dump_fixtures(path, delete_after=False):
     click.echo('Saving db as fixtures to: ' + path)
     # If an error occured, don't delete any records
     errors = []
+    # Allow absolute OR relative paths.
+    cwd = '' if path.startswith('/') else os.getcwd()
     for dashboard in adapter.read():
         # Mongo id is not serializeable
         if '_id' in dashboard:
             dashboard.pop('_id')
         # Update date records
         dashboard.update(date=str(dashboard['date']))
-        name = '{}_{}'.format(dashboard['name'], dashboard['id'])
+        name = '{}-{}'.format(dashboard['name'], dashboard['id'])
         name = name.replace(' ', '-').lower()
-        fullpath = '{}/{}/{}.json'.format(os.getcwd(), path, name)
-        click.echo('Saving fixture: ' + name)
+        fullpath = '{}{}/{}.json'.format(cwd, path, name)
+        click.echo('Saving fixture: ' + fullpath)
         try:
             with open(fullpath, 'w') as fixture:
                 fixture.write(json.dumps(dashboard, indent=4))
