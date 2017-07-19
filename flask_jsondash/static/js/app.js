@@ -5,8 +5,7 @@
 
 var jsondash = function() {
     var my = {
-        chart_wall: null,
-        url_cache: {}
+        chart_wall: null
     };
     var MIN_CHART_SIZE   = 200;
     var API_ROUTE_URL    = $('[name="dataSource"]');
@@ -41,10 +40,13 @@ var jsondash = function() {
         preview_api:      'jsondash.preview',
     }
 
+    /**
+     * [Widgets A singleton manager for all widgets.]
+     */
     function Widgets() {
         var self = this;
-        var all_loaded = false;
         self.widgets = {};
+        self.url_cache = {};
         self.container = MAIN_CONTAINER.selector;
         self.all = function() {
             return self.widgets;
@@ -72,6 +74,37 @@ var jsondash = function() {
                 props.push(widg.config[propname]);
             });
             return props;
+        };
+        self.loadAll = function() {
+            var unique_urls = d3.set(self.getAllOfProp('dataSource')).values();
+            var cached = {};
+            var proms = [];
+            // Build out promises.
+            $.each(unique_urls, function(_, url){
+                proms.push($.getJSON(url));
+            });
+            // Retrieve and gather the promises
+            $.when.apply($, proms).done(whenAllDone).then(thenAfter, thenAfterFailed);
+
+            function whenAllDone() {
+                $.each(arguments, function(index, prom){
+                    var ref_url = unique_urls[index];
+                    var data = prom[0];
+                    cached[ref_url] = data;
+                });
+                // Inject a cached value on the config for use down the road
+                // (this is done so little is changed with the architecture of getting and loading).
+                for(var guid in self.all()){
+                    // Don't refresh, just update config with new key.
+                    var widg = self.get(guid);
+                    widg.update({cachedData: cached[widg.config.dataSource]}, true);
+                    // Actually load them all
+                    widg.load();
+                }
+            }
+
+            function thenAfter() {}
+            function thenAfterFailed(error) {}
         };
         self.newModel = function() {
             var config = getParsedFormConfig();
@@ -916,9 +949,7 @@ var jsondash = function() {
         my.widgets.populate(data);
 
         // Load all widgets, adding actual ajax data.
-        for(var guid in my.widgets.all()){
-            my.widgets.get(guid).load();
-        }
+        my.widgets.loadAll();
 
         // Setup responsive handlers
         var jres = jRespond([{
