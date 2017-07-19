@@ -87,17 +87,31 @@ var jsondash = function() {
             $.when.apply($, proms).done(whenAllDone).then(thenAfter, thenAfterFailed);
 
             function whenAllDone() {
-                $.each(arguments, function(index, prom){
-                    var ref_url = unique_urls[index];
-                    var data = prom[0];
-                    cached[ref_url] = data;
-                });
+                if(arguments.length === 3) {
+                    var ref_url = unique_urls[0];
+                    var data = arguments[0];
+                    if(ref_url) {
+                        cached[ref_url] = data;
+                    }
+                } else {
+                    $.each(arguments, function(index, prom){
+                        var ref_url = unique_urls[index];
+                        var data = null;
+                        if(ref_url) {
+                            data = prom[0];
+                            cached[ref_url] = data;
+                        }
+                    });
+                }
                 // Inject a cached value on the config for use down the road
                 // (this is done so little is changed with the architecture of getting and loading).
                 for(var guid in self.all()){
-                    // Don't refresh, just update config with new key.
+                    // Don't refresh, just update config with new key value for cached data.
                     var widg = self.get(guid);
-                    widg.update({cachedData: cached[widg.config.dataSource]}, true);
+                    var data = cached[widg.config.dataSource];
+                    // Grab data from specific `key` key, if it exists (for shared data on a single endpoint).
+                    var cachedData = widg.config.key && data.multicharts ? data.multicharts[widg.config.key] : data;
+                    widg.update({cachedData: cachedData}, true);
                     // Actually load them all
                     widg.load();
                 }

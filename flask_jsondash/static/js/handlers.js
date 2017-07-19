@@ -32,7 +32,7 @@ jsondash.getJSON = function(container, config, callback) {
             jsondash.unload(container);
             return;
         }
-        callback(error, data);
+        callback(error, config.key && data.multicharts[config.key] ? data.multicharts[config.key] : data);
     });
 };
 
