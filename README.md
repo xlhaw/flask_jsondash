@@ -440,6 +440,10 @@ could return `{"data": [1, 2, 3, 4]}`, but you could customize the url by updati
 
 could return `{"data": [10, 20, 30, 40]}` instead!
 
+### Using shared data for performance and simplicity.
+
+Data from a single source can be shared amongst N charts using namespaced "keys" in the payload.[See the shared data section at](docs/schemas.md) and visit an example shared data configuration [here](https://github.com/christabor/flask_jsondash/blob/master/example_app/examples/config/shared-data.json) for more.
+
 ### Generating test data
 
 Included are CLI utilities for generating fake charts, etc. You will need to run them like a python package due to their relative import style which is required for py2/p3 compatibility. To run, for example, the model factory generator, run `python -m flask_jsondash.model_factories --records 10`. For python3.x, just replace that with `python3 -m ...`.
