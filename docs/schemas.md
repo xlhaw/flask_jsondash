@@ -4,7 +4,7 @@ For all charts, examples are either directly linked below, or can be found by br
 
 *Sharing data on a single endpoint*
 
-It is also possible to share data on a single endpoint, by effectively "namespacing" each chart. See [example shared data configuration](https://github.com/christabor/flask_jsondash/blob/master/example_app/examples/config/shared-data.json) and the [core config schema](schema.md) under `modules:key`.
+It is also possible to share data on a single endpoint, by effectively "namespacing" each chart. See [example shared data configuration](https://github.com/christabor/flask_jsondash/blob/master/example_app/examples/config/shared-data.json) and the [core config schema](config.md) under `modules:key`.
 
 ## Vega
 

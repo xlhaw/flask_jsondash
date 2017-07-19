@@ -442,7 +442,7 @@ could return `{"data": [10, 20, 30, 40]}` instead!
 
 ### Using shared data for performance and simplicity.
 
-Data from a single source can be shared amongst N charts using namespaced "keys" in the payload.[See the shared data section at](docs/schemas.md) and visit an example shared data configuration [here](https://github.com/christabor/flask_jsondash/blob/master/example_app/examples/config/shared-data.json) for more.
+Data from a single source can be shared amongst N charts using namespaced "keys" in the payload. [See the shared data section](docs/schemas.md) and visit an [example configuration here](https://github.com/christabor/flask_jsondash/blob/master/example_app/examples/config/shared-data.json) for more.
 
 ### Generating test data
 
